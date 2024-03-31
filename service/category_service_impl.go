@@ -54,6 +54,7 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
 	helper.PanicIfError(err)
 
+	category.Name = request.Name
 	category = service.CategoryRepository.Update(ctx, tx, category)
 
 	return helper.ToCategoryResponse(category)
