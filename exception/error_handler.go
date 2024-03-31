@@ -4,13 +4,38 @@ import (
 	"belajar-golang-restful-api/helper"
 	"belajar-golang-restful-api/model/web"
 	"net/http"
+
+	"github.com/go-playground/validator/v10"
 )
 
 func ErroHandler(writer http.ResponseWriter, request *http.Request, err interface{}) {
 	if notFoundError(writer, request, err) {
 		return
 	}
+
+	if validationErros(writer, request, err) {
+		return
+	}
+
 	internalServerError(writer, request, err)
+}
+
+func validationErros(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
+	exception, ok := err.(validator.ValidationErrors)
+	if ok {
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusBadRequest)
+
+		webResponse := web.WebResponse{
+			Code:   http.StatusBadRequest,
+			Status: "Bad request",
+			Data:   exception.Error(),
+		}
+		helper.WriteToResponseBody(writer, webResponse)
+		return true
+	} else {
+		return false
+	}
 }
 
 func notFoundError(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
