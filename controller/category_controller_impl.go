@@ -4,7 +4,6 @@ import (
 	"belajar-golang-restful-api/helper"
 	"belajar-golang-restful-api/model/web"
 	"belajar-golang-restful-api/service"
-	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -16,10 +15,8 @@ type CategoryControllerImpl struct {
 }
 
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	decoder := json.NewDecoder(request.Body)
 	categoryCreateRequest := web.CategoryCreateRequest{}
-	err := decoder.Decode(&categoryCreateRequest)
-	helper.PanicIfError(err)
+	helper.ReadFromRequestBody(request, &categoryCreateRequest)
 
 	categoryResponse := controller.CategoryService.Create(request.Context(), categoryCreateRequest)
 	webResponse := web.WebResponse{
@@ -28,18 +25,13 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 		Data:   categoryResponse,
 	}
 
-	writer.Header().Add("Content-type", "application/json")
-	encoder := json.NewEncoder(writer)
-	err = encoder.Encode(webResponse)
-	helper.PanicIfError(err)
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
 func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	decoder := json.NewDecoder(request.Body)
 	categoryUpdateRequest := web.CategoryUpdateRequest{}
-	err := decoder.Decode(&categoryUpdateRequest)
-	helper.PanicIfError(err)
+	helper.ReadFromRequestBody(request, &categoryUpdateRequest)
 
 	categoryId := params.ByName("categoryId")
 	id, err := strconv.Atoi(categoryId)
@@ -54,10 +46,7 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 		Data:   categoryResponse,
 	}
 
-	writer.Header().Add("Content-type", "application/json")
-	encoder := json.NewEncoder(writer)
-	err = encoder.Encode(webResponse)
-	helper.PanicIfError(err)
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
@@ -73,10 +62,7 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 		Status: "OK",
 	}
 
-	writer.Header().Add("Content-type", "application/json")
-	encoder := json.NewEncoder(writer)
-	err = encoder.Encode(webResponse)
-	helper.PanicIfError(err)
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
@@ -93,10 +79,7 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 		Data:   categoryResponse,
 	}
 
-	writer.Header().Add("Content-type", "application/json")
-	encoder := json.NewEncoder(writer)
-	err = encoder.Encode(webResponse)
-	helper.PanicIfError(err)
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
 
@@ -109,9 +92,6 @@ func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, re
 		Data:   categoryResponses,
 	}
 
-	writer.Header().Add("Content-type", "application/json")
-	encoder := json.NewEncoder(writer)
-	err := encoder.Encode(webResponse)
-	helper.PanicIfError(err)
+	helper.WriteToResponseBody(writer, webResponse)
 
 }
