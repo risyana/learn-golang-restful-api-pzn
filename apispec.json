@@ -29,11 +29,22 @@
             }
           }
         }
+      },
+      "securitySchemes": {
+        "CategoryAuth": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "X-API-Key",
+          "description": "auth for category api"
+        }
       }
     },
     "paths": {
       "/categories" : {
         "get": {
+          "security": [ {
+            "CategoryAuth" : []
+          }],
           "tags": ["Category api"],
           "description" : "List all categories",
           "summary" : "List all categories",
@@ -65,6 +76,9 @@
           }
         },
         "post": {
+          "security": [ {
+            "CategoryAuth" : []
+          }],
           "tags": ["Category api"],
           "description": "Create new category",
           "summary": "Create new category",
@@ -105,6 +119,9 @@
       },
       "/categories/{categoryId}": {
         "get": {
+          "security": [ {
+            "CategoryAuth" : []
+          }],
           "tags": ["Category api"],
           "description": "get single category by id",
           "summary": "get single category by id",
@@ -141,6 +158,9 @@
           }
         },
         "put": {
+          "security": [ {
+            "CategoryAuth" : []
+          }],
           "tags": ["Category api"],
           "description": "update single category by id",
           "summary": "update single category by id",
@@ -186,6 +206,9 @@
           }
         },
         "delete": {
+          "security": [ {
+            "CategoryAuth" : []
+          }],
           "tags": ["Category api"],
           "description": "delete single category by id",
           "summary": "delete single category by id",
