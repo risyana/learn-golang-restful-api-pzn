@@ -12,9 +12,9 @@ import (
 )
 
 type CategoryServiceImpl struct {
-	CategoryRepositry repository.CategoryRepositry
-	DB                *sql.DB
-	Validate          *validator.Validate
+	CategoryRepository repository.CategoryRepository
+	DB                 *sql.DB
+	Validate           *validator.Validate
 }
 
 func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
@@ -29,7 +29,7 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 		Name: request.Name,
 	}
 
-	category = service.CategoryRepositry.Save(ctx, tx, category)
+	category = service.CategoryRepository.Save(ctx, tx, category)
 
 	return helper.ToCategoryResponse(category)
 
@@ -43,10 +43,10 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	category, err := service.CategoryRepositry.FindById(ctx, tx, request.Id)
+	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
 	helper.PanicIfError(err)
 
-	category = service.CategoryRepositry.Update(ctx, tx, category)
+	category = service.CategoryRepository.Update(ctx, tx, category)
 
 	return helper.ToCategoryResponse(category)
 }
@@ -56,10 +56,10 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	category, err := service.CategoryRepositry.FindById(ctx, tx, categoryId)
+	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 	helper.PanicIfError(err)
 
-	service.CategoryRepositry.Delete(ctx, tx, category)
+	service.CategoryRepository.Delete(ctx, tx, category)
 
 }
 
@@ -68,7 +68,7 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	category, err := service.CategoryRepositry.FindById(ctx, tx, categoryId)
+	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
 	helper.PanicIfError(err)
 
 	return helper.ToCategoryResponse((category))
@@ -79,7 +79,7 @@ func (service *CategoryServiceImpl) FindAll(ctx context.Context) []web.CategoryR
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	categories := service.CategoryRepositry.FindAll(ctx, tx)
+	categories := service.CategoryRepository.FindAll(ctx, tx)
 
 	return helper.ToCategoryResponses((categories))
 }
