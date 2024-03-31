@@ -1,0 +1,223 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"Category restful api",
+      "description": "API spec golang restfull api",
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"http://localhost:3000/api"}
+    ],
+    "components": {
+      "schemas": {
+        "PayloadCreateOrUpdate": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "Category": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "paths": {
+      "/categories" : {
+        "get": {
+          "tags": ["Category api"],
+          "description" : "List all categories",
+          "summary" : "List all categories",
+          "responses": {
+            "200": {
+              "description": "Success get all categories",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Category"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["Category api"],
+          "description": "Create new category",
+          "summary": "Create new category",
+          "parameters": [],
+          "requestBody": {
+            "content": {
+              "application/json":{
+                "schema": {
+                  "$ref" : "#/components/schemas/PayloadCreateOrUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success create category",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/categories/{categoryId}": {
+        "get": {
+          "tags": ["Category api"],
+          "description": "get single category by id",
+          "summary": "get single category by id",
+          "parameters": [
+            {
+              "name": "categoryId",
+              "in": "path",
+              "description": "category id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success get category",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": ["Category api"],
+          "description": "update single category by id",
+          "summary": "update single category by id",
+          "parameters": [
+            {
+              "name": "categoryId",
+              "in": "path",
+              "description": "category id",
+              "required": true
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json":{
+                "schema": {
+                  "$ref" : "#/components/schemas/PayloadCreateOrUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success update category",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": ["Category api"],
+          "description": "delete single category by id",
+          "summary": "delete single category by id",
+          "parameters": [
+            {
+              "name": "categoryId",
+              "in": "path",
+              "description": "category id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success delete category",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
